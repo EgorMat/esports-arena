@@ -65,16 +65,19 @@ const actions = {
       commit('LEAVE_GAME', payload)
   },
   updateGame({state}){
-    console.log(state.id)
-    const g = db.collection("games").where("id", "==", state.id);
-      g.update({
-        team1 : state.team1,
-        team2 : state.team2,
-        balance : state.balance
+    var x;
+    const g = db.collection("games").where("id", "==", state.id).get()
+    .then(function(querySnapshot){
+      querySnapshot.forEach(function(doc){
+        console.log(doc.id)
+        return db.collection("games").doc(doc.id).update({
+           team1 : state.team1,
+           team2 : state.team2,
+           money : state.money
+       })
+      })
     })
-    .then(function() {
-    console.log("Document successfully updated!");
-})
+
   }
 
 

@@ -36,6 +36,7 @@ export default{
 
   created(){
     this.$store.dispatch('setGame', this.$route.params.id);
+    this.checkPlayer();
     },
 
   computed:mapGetters({
@@ -43,6 +44,14 @@ export default{
       }),
 
   methods: {
+    checkPlayer(){
+        for(let i = 0; i<=4; i++){
+            if((this.game.team1[i] == this.$store.getters.getCurrentUser.id)||(this.game.team2[i] == this.$store.getters.getCurrentUser.id)){
+              console.log(qwd);
+              this.isIn = true;
+            }
+}
+    },
     joinTeam1(){
       this.$store.dispatch('joinTeam1', this.$store.getters.getCurrentUser.id);
       this.isIn = true;

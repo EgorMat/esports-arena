@@ -16,32 +16,57 @@
       </li>
     </ul>
   </div>
-  <!-- <button v-on:click='joinTournament' v-if='!isIn'>Присоединиться к турниру</button>
-  <button v-on:click='leaveTournament' v-if='isIn'>Покинуть турнир</button> -->
+  <button v-on:click='joinTeam1' v-if='!isIn'>Присоединиться к команде 1</button>
+  <button v-on:click='joinTeam2' v-if='!isIn'>Присоединиться к команде 2</button>
+  <button v-on:click='leaveGame' v-if='isIn'>Покинуть турнир</button>
 </div>
 </template>
 
 
 
-<script>
+ <script>
 import {mapGetters} from 'vuex'
 
 export default{
+  data(){
+    return{
+      isIn: false
+      }
+    },
+
   created(){
     this.$store.dispatch('setGame', this.$route.params.id);
-  },
+    },
+
   computed:mapGetters({
     game : 'getGame'
-  }),
- watch:{
-   'this.$route.params.id' : 'getGame'
- }
+      }),
+
+  methods: {
+    joinTeam1(){
+      this.$store.dispatch('joinTeam1', this.$store.getters.getCurrentUser.id);
+      this.isIn = true;
+    },
+    joinTeam2(){
+      this.$store.dispatch('joinTeam2', this.$store.getters.getCurrentUser.id);
+      this.isIn = true;
+    },
+    leaveGame(){
+      this.$store.dispatch('leaveGame',this.$store.getters.getCurrentUser.id)
+       this.isIn = false;
+          }
+      },
+
+    beforeRouteLeave (to, from , next) {
+      this.$store.dispatch('updateGame');
+        next()
+  }
 
  }
 
-</script>
+ </script>
 
 
-<style lang='scss' scoped>
+ <style lang='scss' scoped>
  @import '../style/tournament.scss';
 </style>

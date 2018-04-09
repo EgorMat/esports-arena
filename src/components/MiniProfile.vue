@@ -1,10 +1,7 @@
 <template>
   <div>
-
     {{currentUser.username}}
-    {{currentUser.email}}
-    {{currentUser.balance}}
-    {{currentUser.id}}
+    Баланс:{{currentUser.balance}}
   </div>
 </template>
 

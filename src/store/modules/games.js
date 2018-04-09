@@ -1,46 +1,51 @@
-import axios from 'axios';
+import {db} from '../../main.js';
+import * as firebase from "firebase";
 
 const state  = {
-games : [],
+    games : [],
   };
 
 const mutations = {
-    GET_TOURNAMENTS(state, tournaments){
-    state.tournaments = tournaments
-    },
-  // JOIN_TOURNAMENT(state, tournamentId){
-  // let a = getters.getTournamentById(tournamentId)
-  // a.players.push(this.state.currentUser.id)
-  // }
+    SET_GAMES(state, games){
+      state.games = games
+    }
 };
 
-// const getters  = {
-//   getTournamentById(state, id){
-//     let x;
-//     for (let i = 0; i<=state.tournaments.length-1;i++){
-//          if(state.tournaments[i].id == id){
-//            x = state.tournaments[i];
-//          }
-//          return x;
-//   }
-// }};
+const getters  = {
+  getGameById(state){return (id) => {
+    let x;
+    for (let i = 0; i<=state.games.length-1;i++){
+         if(state.games[i].id == id){
+           x = state.games[i];
+         }
+         return x;
+       }
+     }},
+  getGames(state){
+    return state.games
+  }
+}
 
 
 const actions = {
-    // getTournaments({commit}){
-    //   axios.get('http://localhost:3004/tournaments/')
-    //   .then(response => {
-    //     commit('GET_TOURNAMENTS', response.data)
-    //   });
-    // },
-    joinTournament({commit}, tournamentId){
-      commit('JOIN_TOURNAMENT', tournamentId);
-    }
+    setGames({commit, state}){
+      firebase.auth().onAuthStateChanged(function(u) {
+      if (u){
+        const g = [];
+        db.collection("games").get().then(function(querySnapshot) {
+         querySnapshot.forEach(function(doc) {
+             g.push(doc.data());
+         });
+         commit('SET_GAMES', g)
+     })
+   }
+ })}
 }
 
 
 export default {
   state,
+  getters,
   mutations,
   actions
 }

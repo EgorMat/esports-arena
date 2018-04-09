@@ -18,9 +18,6 @@ import GamesList from './GamesList.vue'
 import GamePage from './GamePage.vue'
 import NavigationBar from './NavigationBar.vue'
 export default {
-    methods: {
-
-    },
     components: {
       MiniProfile,
       NavigationBar,

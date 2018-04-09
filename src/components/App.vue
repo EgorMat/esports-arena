@@ -9,10 +9,15 @@
 import {mapActions, mapState} from 'vuex';
 import HomePage from './HomePage';
 import Dashboard from './Dashboard'
+import GamesList from './GamesList'
+import GamePage from './GamePage'
+
 export default {
   components: {
     HomePage,
-    Dashboard
+    Dashboard,
+    GamesList,
+    GamePage,
   },
 }
 </script>

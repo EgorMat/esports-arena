@@ -24,6 +24,7 @@ export default {
   },
   methods: {
     onSubmit(e) {
+      e.preventDefault();
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
         .then(((user) => {
             db.collection("users").doc('user' + this.username.toString()).set({
@@ -43,7 +44,8 @@ export default {
             this.$router.push('/dashboard')
           }),
           function(error) {
-            alert('Неправильно')
+            // alert('Неправильно')
+            console.log(error)
           });
 
     }

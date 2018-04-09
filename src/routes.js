@@ -12,7 +12,7 @@ const routes = [
     requiresAuth : true
   },
   children: [{path:'/' , component : GamesList} ,
-              {name: 'tournament', path:'/tournament/:id' ,component: GamePage,  props: true },
+              {name: 'game', path:'/game/:id' ,component: GamePage, props:true},
               {name: 'finance', path:'/finance' , component: FinancePage }] ,
 
     },

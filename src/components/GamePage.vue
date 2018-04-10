@@ -49,27 +49,27 @@ export default{
       const t1 = this.game.team1;
       const t2 = this.game.team2;
       for(let i = 0; i<=t1.length-1; i++){
-        if(t1[i] == this.$store.getters.getCurrentUser.id){
+        if(t1[i] == this.$store.getters.getCurrentUser.username){
             this.isIn = true;
             console.log(this.isIn)
         }
       };
       for(let k = 0; k<=t2.length-1; k++){
-        if(t2[k] == this.$store.getters.getCurrentUser.id){
+        if(t2[k] == this.$store.getters.getCurrentUser.username){
         this.isIn = true;
         }
       }
     },
     joinTeam1(){
-      this.$store.dispatch('joinTeam1', this.$store.getters.getCurrentUser.id);
+      this.$store.dispatch('joinTeam1', this.$store.getters.getCurrentUser.username);
       this.isIn = true;
     },
     joinTeam2(){
-      this.$store.dispatch('joinTeam2', this.$store.getters.getCurrentUser.id);
+      this.$store.dispatch('joinTeam2', this.$store.getters.getCurrentUser.username);
       this.isIn = true;
     },
     leaveGame(){
-      this.$store.dispatch('leaveGame',this.$store.state.currentUser.id)
+      this.$store.dispatch('leaveGame',this.$store.state.currentUser.username)
        this.isIn = false;
           }
       },

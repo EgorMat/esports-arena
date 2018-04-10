@@ -6,7 +6,7 @@ const state  = {
   username: '',
   email : '',
   id : '',
-  balance : '',
+  balance : null,
   games : [],
 };
 
@@ -18,6 +18,13 @@ const mutations = {
       state.balance = user.balance;
       state.games = user.games;
     },
+    // RESET_CURRENT_USER(state){
+    //   state.email = '';
+    //   state.id  = '';
+    //   state.username = '';
+    //   state.balance = null;
+    //   state.games = [];
+    // }
 
 }
 
@@ -37,9 +44,7 @@ const actions = {
             commit('SET_CURRENT_USER', doc.data());;
         });
     })
-        } else {
-      this.$router.push('home')
-  }
+        }
 });
 
     }

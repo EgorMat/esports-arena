@@ -4,7 +4,7 @@
     <div v-show='menuOpened'>
       <ul>
       <li><router-link :to="{ name: 'profile'}">Профиль</router-link></li>
-      <li>КУКУ</li>
+      <li v-on:click='signOut'>Выход</li>
     </ul>
     </div>
     Баланс:{{currentUser.balance}}
@@ -13,7 +13,8 @@
 
 
 <script>
-import {mapActions, mapState, mapGetters} from 'vuex'
+import {mapActions, mapState, mapGetters} from 'vuex';
+import * as firebase from "firebase";
 
 export default{
   data(){
@@ -30,6 +31,13 @@ export default{
     methods:{
       openMenu(){
         this.menuOpened = this.menuOpened ? false : true
+      },
+      signOut(){
+        firebase.auth().signOut().then(()=>{
+          this.$router.push('/')
+}).catch(function(error) {
+    console.log(error)
+});
       }
     }
 

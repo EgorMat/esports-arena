@@ -30,6 +30,15 @@ new Vue({
   el: '#app',
   store,
   router,
+  created(){
+    firebase.auth().onAuthStateChanged(function(u) {
+    if (u){
+      alert('ura')
+    }
+    else{
+      router.push('/')
+    }})
+  },
   render: h => h(App)
 })
 

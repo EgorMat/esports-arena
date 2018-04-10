@@ -69,7 +69,6 @@ const actions = {
     const g = db.collection("games").where("id", "==", state.id).get()
     .then(function(querySnapshot){
       querySnapshot.forEach(function(doc){
-        console.log(doc.id)
         return db.collection("games").doc(doc.id).update({
            team1 : state.team1,
            team2 : state.team2,

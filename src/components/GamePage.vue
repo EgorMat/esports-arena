@@ -16,8 +16,8 @@
       </li>
     </ul>
   </div>
-  <button v-on:click='joinTeam1' v-if='!isIn'>Присоединиться к команде 1</button>
-  <button v-on:click='joinTeam2' v-if='!isIn'>Присоединиться к команде 2</button>
+  <button v-on:click='joinTeam1' v-if='!isIn' key="team1">Присоединиться к команде 1</button>
+  <button v-on:click='joinTeam2' v-if='!isIn' key="team2">Присоединиться к команде 2</button>
   <button v-on:click='leaveGame' v-if='isIn'>Покинуть турнир</button>
 </div>
 </template>
@@ -36,7 +36,8 @@ export default{
 
   created(){
     this.$store.dispatch('setGame', this.$route.params.id);
-    this.checkPlayer();
+    setTimeout((()=>this.checkPlayer()), 500);
+    console.log(this.isIn)
     },
 
   computed:mapGetters({
@@ -45,12 +46,19 @@ export default{
 
   methods: {
     checkPlayer(){
-        for(let i = 0; i<=4; i++){
-            if((this.game.team1[i] == this.$store.getters.getCurrentUser.id)||(this.game.team2[i] == this.$store.getters.getCurrentUser.id)){
-              console.log(qwd);
-              this.isIn = true;
-            }
-}
+      const t1 = this.game.team1;
+      const t2 = this.game.team2;
+      for(let i = 0; i<=t1.length-1; i++){
+        if(t1[i] == this.$store.getters.getCurrentUser.id){
+            this.isIn = true;
+            console.log(this.isIn)
+        }
+      };
+      for(let k = 0; k<=t2.length-1; k++){
+        if(t2[k] == this.$store.getters.getCurrentUser.id){
+        this.isIn = true;
+        }
+      }
     },
     joinTeam1(){
       this.$store.dispatch('joinTeam1', this.$store.getters.getCurrentUser.id);
@@ -61,7 +69,7 @@ export default{
       this.isIn = true;
     },
     leaveGame(){
-      this.$store.dispatch('leaveGame',this.$store.getters.getCurrentUser.id)
+      this.$store.dispatch('leaveGame',this.$store.state.currentUser.id)
        this.isIn = false;
           }
       },

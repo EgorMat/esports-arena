@@ -1,5 +1,6 @@
 <template>
-<div class="tournament">
+<div class="preloader" v-if='isLoading'>Загрузка...</div>
+<div class="tournament" v-else>
   <p>ID турнира: {{game.id}}</p>
   <p>Сумма: {{game.money}}</p>
   <div>Команда 1:
@@ -34,7 +35,8 @@ export default{
   data(){
     return{
       game : {},
-      isIn: false
+      isIn: false,
+      isLoading : true
       }
     },
 
@@ -66,7 +68,7 @@ export default{
               if (this.game.team1[i] === this.user.username){
                   z = this.game.team1[i];
                   let y  = this.game.team1.indexOf(z);
-                  this.game.team1.splice(z,1);
+                  this.game.team1.splice(y,1);
                   this.updateGame();
                   this.isIn = false;
               }
@@ -74,8 +76,8 @@ export default{
             for(let i = 0; i<=4; i++){
                 if (this.game.team2[i] === this.user.username){
                     x = this.game.team2[i];
-                    let y  = this.game.team2.indexOf(x);
-                    this.game.team2.splice(x,1);
+                    let k  = this.game.team2.indexOf(x);
+                    this.game.team2.splice(k,1);
                     this.updateGame();
                     this.isIn = false;
                 }
@@ -90,7 +92,7 @@ export default{
           for(let i = 0; i<=t1.length-1; i++){
             if(t1[i] == this.user.username){
                 this.isIn = true;
-                console.log(this.isIn)
+
             }
           };
           for(let k = 0; k<=t2.length-1; k++){
@@ -98,6 +100,7 @@ export default{
             this.isIn = true;
             }
           }
+        this.isLoading = false;
         },
 
     getGame(id){
@@ -122,7 +125,7 @@ export default{
          })
         })
       })
-      console.log('ura')
+      console.log('document updated');
     }
  }
 }

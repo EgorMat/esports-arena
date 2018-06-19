@@ -12,15 +12,6 @@ const mutations = {
 };
 
 const getters  = {
-  // getGameById(state){return (id) => {
-  //   let x;
-  //   for (let i = 0; i<=state.games.length-1;i++){
-  //        if(state.games[i].id == id){
-  //          x = state.games[i];
-  //        }
-  //        return x;
-  //      }
-  //    }},
   getGames(state){
     return state.games
   }

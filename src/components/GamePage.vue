@@ -40,7 +40,7 @@ export default{
 
   created(){
    this.getGame(this.$route.params.id)
-   setTimeout(()=>this.checkPlayer(), 1000);
+   setTimeout(()=>this.checkPlayer(), 1000); /// переделать в промисы
   },
 
   computed: mapGetters({
@@ -63,19 +63,24 @@ export default{
         let x;
         let z;
           for(let i = 0; i<=4; i++){
-              if((this.game.team1[i] == this.user.username) || (this.game.team2[i] == this.user.username)){
-                x = this.game.team1[i];
-                z = this.game.team2[i]; }}
-                  if(x == undefined){
-                    let y = this.game.team2.indexOf(z);
-                    this.game.team2.splice(y,1);
-                  }
-                  else{
-                     let y = this.game.team1.indexOf(x);
-                     this.game.team1.splice(y,1);
-                   }
-      this.updateGame();
-      this.isIn = false;
+              if (this.game.team1[i] === this.user.username){
+                  z = this.game.team1[i];
+                  let y  = this.game.team1.indexOf(z);
+                  this.game.team1.splice(z,1);
+                  this.updateGame();
+                  this.isIn = false;
+              }
+            }
+            for(let i = 0; i<=4; i++){
+                if (this.game.team2[i] === this.user.username){
+                    x = this.game.team2[i];
+                    let y  = this.game.team2.indexOf(x);
+                    this.game.team2.splice(x,1);
+                    this.updateGame();
+                    this.isIn = false;
+                }
+              }
+
     },
 
     checkPlayer(){
@@ -126,4 +131,4 @@ export default{
 
  <style lang='scss' scoped>
  @import '../style/tournament.scss';
-</style>
+ </style>

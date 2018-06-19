@@ -42,3 +42,4 @@ export default{
 <style lang="scss" scoped>
 @import '../style/form.scss';
 </style>
+``

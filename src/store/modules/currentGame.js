@@ -1,16 +1,35 @@
-import {db} from '../../main.js';
-import * as firestore from "firebase/firestore"
-import * as firebase from "firebase";
 
 
+function checkPlayer(game, user) {
+  const t1 = game.team1;
+  const t2 = game.team2;
+  for(let i = 0; i<=t1.length-1; i++){
+    if(t1[i] == user.username){
+        console.log('yeah')
+        return true;
+    }
+    else {
+      return false;
+    }
+  };
+
+  for(let k = 0; k<=t2.length-1; k++){
+    if(t2[k] == user.username){
+     return true;
+    }
+    else {
+      return false;
+    }
+  }
+}
 
 const state = {
-  id:'',
+  id:' ',
   money : null,
-  team1:[],
-  team2:[],
-  time:""
-
+  team1 : [],
+  team2 : [],
+  time: " ",
+  isIn : null
 };
 
 const mutations = {
@@ -21,17 +40,19 @@ const mutations = {
     state.team2 = game.team2;
     state.time  = game.time;
   },
-  JOIN_TEAM1(state,payload){
+  JOIN_TEAM1(state, payload){
     state.team1.push(payload)
+    state.isIn = true;
   },
-  JOIN_TEAM2(state,payload){
+  JOIN_TEAM2(state, payload){
     state.team2.push(payload)
+    state.isIn = true;
   },
   LEAVE_GAME(state, payload){
     let x;
     let z;
       for(let i = 0; i<=4; i++){
-          if((state.team1[i] == payload) ||(state.team2[i] == payload)){
+          if((state.team1[i] == payload) || (state.team2[i] == payload)){
             x = state.team1[i];
             z = state.team2[i]; }}
               if(x==undefined){
@@ -43,8 +64,8 @@ const mutations = {
                  state.team1.splice(y,1);
                }
   }
-};
 
+}
 const actions = {
   setGame({commit, state}, id){
     firebase.auth().onAuthStateChanged(function(u) {
@@ -55,15 +76,6 @@ const actions = {
             commit('SET_GAME', doc.data())});
       })}})
   },
-  joinTeam1({commit, state}, payload){
-      commit('JOIN_TEAM1', payload)
-                                      },
-  joinTeam2({commit, state}, payload){
-        commit('JOIN_TEAM2', payload)
-                                      },
-  leaveGame({commit,state}, payload){
-      commit('LEAVE_GAME', payload)
-  },
   updateGame({state}){
     var x;
     const g = db.collection("games").where("id", "==", state.id).get()
@@ -71,26 +83,10 @@ const actions = {
       querySnapshot.forEach(function(doc){
         return db.collection("games").doc(doc.id).update({
            team1 : state.team1,
-           team2 : state.team2,
-           money : state.money
+           team2 : state.team2
        })
       })
     })
-
-  }
-
-
+    console.log('ura')
+  },
       };
-
-const getters = {
-  getGame(state){
-    return state;
-  }
-}
-
-export default{
-  state,
-  actions,
-  getters,
-  mutations
-}

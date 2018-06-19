@@ -33,7 +33,7 @@ new Vue({
   created(){
     firebase.auth().onAuthStateChanged(function(u) {
     if (u){
-      alert('ura')
+      
     }
     else{
       router.push('/')

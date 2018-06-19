@@ -26,61 +26,101 @@
 
  <script>
 import {mapGetters} from 'vuex'
+import {db} from '../main.js';
+import * as firestore from "firebase/firestore"
+import * as firebase from "firebase";
 
 export default{
   data(){
     return{
+      game : {},
       isIn: false
       }
     },
 
   created(){
-    this.$store.dispatch('setGame', this.$route.params.id);
-    setTimeout((()=>this.checkPlayer()), 500);
-    console.log(this.isIn)
-    },
+   this.getGame(this.$route.params.id)
+   setTimeout(()=>this.checkPlayer(), 1000);
+  },
 
-  computed:mapGetters({
-    game : 'getGame'
-      }),
+  computed: mapGetters({
+    user : 'getCurrentUser'
+  }),
 
   methods: {
-    checkPlayer(){
-      const t1 = this.game.team1;
-      const t2 = this.game.team2;
-      for(let i = 0; i<=t1.length-1; i++){
-        if(t1[i] == this.$store.getters.getCurrentUser.username){
-            this.isIn = true;
-            console.log(this.isIn)
-        }
-      };
-      for(let k = 0; k<=t2.length-1; k++){
-        if(t2[k] == this.$store.getters.getCurrentUser.username){
-        this.isIn = true;
-        }
-      }
-    },
     joinTeam1(){
-      this.$store.dispatch('joinTeam1', this.$store.getters.getCurrentUser.username);
+      this.game.team1.push(this.user.username);
+      this.updateGame();
       this.isIn = true;
     },
+
     joinTeam2(){
-      this.$store.dispatch('joinTeam2', this.$store.getters.getCurrentUser.username);
+      this.game.team2.push(this.user.username);
+      this.updateGame();
       this.isIn = true;
     },
     leaveGame(){
-      this.$store.dispatch('leaveGame',this.$store.state.currentUser.username)
-       this.isIn = false;
+        let x;
+        let z;
+          for(let i = 0; i<=4; i++){
+              if((this.game.team1[i] == this.user.username) || (this.game.team2[i] == this.user.username)){
+                x = this.game.team1[i];
+                z = this.game.team2[i]; }}
+                  if(x == undefined){
+                    let y = this.game.team2.indexOf(z);
+                    this.game.team2.splice(y,1);
+                  }
+                  else{
+                     let y = this.game.team1.indexOf(x);
+                     this.game.team1.splice(y,1);
+                   }
+      this.updateGame();
+      this.isIn = false;
+    },
+
+    checkPlayer(){
+      let t1 = this.game.team1;
+      let t2 = this.game.team2;
+          console.log(this.game.team1)
+          for(let i = 0; i<=t1.length-1; i++){
+            if(t1[i] == this.user.username){
+                this.isIn = true;
+                console.log(this.isIn)
+            }
+          };
+          for(let k = 0; k<=t2.length-1; k++){
+            if(t2[k] == this.user.username){
+            this.isIn = true;
+            }
           }
-      },
+        },
 
-    beforeRouteLeave (to, from , next) {
-      this.$store.dispatch('updateGame');
-        next()
-  }
-
+    getGame(id){
+      var $this = this
+      firebase.auth().onAuthStateChanged(function(u) {
+      if (u){
+        const g = db.collection("games").where("id", "==", id)
+          g.get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+             $this.game = doc.data()});
+        })}})
+    },
+    updateGame(){
+      var x;
+      var $this = this;
+      const g = db.collection("games").where("id", "==", $this.game.id).get()
+      .then(function(querySnapshot){
+        querySnapshot.forEach(function(doc){
+          return db.collection("games").doc(doc.id).update({
+             team1 : $this.game.team1,
+             team2 : $this.game.team2
+         })
+        })
+      })
+      console.log('ura')
+    }
  }
-
+}
  </script>
 
 

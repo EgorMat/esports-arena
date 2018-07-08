@@ -25,7 +25,11 @@
       </router-link>
     </li>
   </ul>
+  <router-link :to="{name: 'creategame'}">
+     Создать игру
+  </router-link>
 </div>
+
 </template>
 
 <script>

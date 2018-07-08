@@ -1,25 +1,36 @@
-<template>
+ <template>
 <div class="preloader" v-if='isLoading'>Загрузка...</div>
 <div class="tournament" v-else>
+  <div class="modal-window" v-show='modal1Opened'>Вы уверены, что хотите снять с вашего баланса {{game.money}}р. и зайти за 1 команду?
+    <button class='ok-button' @click ='joinTeam1'>ОК</button>
+  </div>
+  <div class="modal-window" v-show='modal2Opened'>Вы уверены, что хотите снять с вашего баланса {{game.money}}р. и зайти за 2 команду?
+    <button class='ok-button' @click ='joinTeam2'>ОК</button>
+  </div>
+  <div class="modal-window" v-show='modal3Opened'>{{game.money}}р. будут возвращены на Ваш баланс
+    <button class='ok-button' @click ='leaveGame'>ОК</button>
+  </div>
+  <div class='fader' v-show ='showFader' @click='closeModals'></div>
   <p>ID турнира: {{game.id}}</p>
   <p>Сумма: {{game.money}}</p>
-  <div>Команда 1:
+  <div>Силы Света:
     <ul>
       <li v-for="players in game.team1">
         {{players}}
       </li>
     </ul>
   </div>
-  <div>Команда 2:
+  <div>Силы Тьмы:
     <ul>
       <li v-for="players in game.team2">
         {{players}}
       </li>
     </ul>
   </div>
-  <button v-on:click='joinTeam1' v-if='!isIn' key="team1">Присоединиться к команде 1</button>
-  <button v-on:click='joinTeam2' v-if='!isIn' key="team2">Присоединиться к команде 2</button>
-  <button v-on:click='leaveGame' v-if='isIn'>Покинуть турнир</button>
+  <button v-on:click='showModal1' v-if='!isIn' key="team1">Присоединиться к Силам Света</button>
+  <button v-on:click='showModal2' v-if='!isIn' key="team2">Присоединиться к Силам Тьмы</button>
+  <button v-on:click='showModal3' v-if='isIn'>Покинуть турнир</button>
+
 </div>
 </template>
 
@@ -36,13 +47,17 @@ export default{
     return{
       game : {},
       isIn: false,
-      isLoading : true
+      isLoading : true,
+      modal1Opened : false,
+      modal2Opened : false,
+      modal3Opened : false,
+      showFader  : false
       }
     },
 
   created(){
    this.getGame(this.$route.params.id)
-   setTimeout(()=>this.checkPlayer(), 1000); /// переделать в промисы
+   setTimeout(()=>this.checkPlayer(), 2000); /// переделать в промисы
   },
 
   computed: mapGetters({
@@ -50,16 +65,53 @@ export default{
   }),
 
   methods: {
+    showModal1(){
+      this.modal1Opened = true;
+      this.showFader = true;
+    },
+
+    showModal2() {
+      this.modal2Opened = true;
+      this.showFader = true;
+    },
+
+    showModal3(){
+      this.modal3Opened = true;
+      this.showFader = true;
+    },
+
+    closeModals(){
+      this.modal1Opened = false;
+      this.modal2Opened = false;
+      this.modal3Opened = false;
+      this.showFader = false;
+    },
+
     joinTeam1(){
+      if (this.user.balance >= this.game.money){
       this.game.team1.push(this.user.username);
       this.updateGame();
       this.isIn = true;
+      this.$store.dispatch('debitBalance', this.game.money).then(this.$store.dispatch('updateProfile'))
+      this.closeModals()
+      }
+        else {
+          alert('у вас не хватает денег')
+        }
     },
 
     joinTeam2(){
+      if (this.user.balance >= this.game.money){
       this.game.team2.push(this.user.username);
       this.updateGame();
       this.isIn = true;
+            this.$store.dispatch('debitBalance', this.game.money).then(this.$store.dispatch('updateProfile'))
+            }
+        else {
+            alert('у вас не хватает денег')
+
+      }
+      this.closeModals()
     },
     leaveGame(){
         let x;
@@ -71,6 +123,7 @@ export default{
                   this.game.team1.splice(y,1);
                   this.updateGame();
                   this.isIn = false;
+                  this.$store.dispatch('returnFunds', this.game.money).then(this.$store.dispatch('updateProfile'))
               }
             }
             for(let i = 0; i<=4; i++){
@@ -80,9 +133,10 @@ export default{
                     this.game.team2.splice(k,1);
                     this.updateGame();
                     this.isIn = false;
+                    this.$store.dispatch('returnFunds', this.game.money).then(this.$store.dispatch('updateProfile'))
                 }
               }
-
+              this.closeModals()
     },
 
     checkPlayer(){

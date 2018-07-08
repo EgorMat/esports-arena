@@ -18,6 +18,12 @@ const mutations = {
       state.balance = user.balance;
       state.games = user.games;
     },
+    DEBIT_BALANCE(state, money) {
+      state.balance = state.balance - money
+    },
+    RETURN_FUNDS(state, money){
+      state.balance = state.balance + money
+    }
     // RESET_CURRENT_USER(state){
     //   state.email = '';
     //   state.id  = '';
@@ -42,12 +48,32 @@ const actions = {
      user.get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
             commit('SET_CURRENT_USER', doc.data());;
-        });
-    })
-        }
-});
+          });
+            })
+                }
+                  });
 
-    }
+    },
+    debitBalance({commit, state}, money){
+        commit('DEBIT_BALANCE', money)
+    },
+    returnFunds({commit, state}, money){
+      commit('RETURN_FUNDS', money)
+    },
+
+    updateProfile({state}){
+      var x;
+      const g = db.collection("users").where("id", "==", state.id).get()
+      .then(function(querySnapshot){
+        querySnapshot.forEach(function(doc){
+          return db.collection("users").doc(doc.id).update({
+             balance: state.balance,
+             games : state.games
+         })
+        })
+      })
+      console.log('ura')
+    },
 }
 
 export default {

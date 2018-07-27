@@ -1,38 +1,59 @@
 <template>
 <div>
   СОздавай игру
-  <form>
-    <button @click='createGame'>Создать игру</button>
-    <input type="number" placeholder="Сумма" v-model="money">
-    <select v-model='mode'>
+
+  <button @click='createGame'>Создать игру</button>
+  <input type="number" placeholder="Сумма" v-model="money">
+  <input type="time" placeholder="Время" v-model="time">
+  <select v-model='mode'>
       <option disabled>Выбор мода</option>
       <option>Captains mode</option>
       <option>All pick</option>
     </select>
-  </form>
-  <button>Пригласить игроков</button>
- Мод : {{mode}}
- Бабло: {{money}}
+      ID : {{id}}
+ Мод : {{mode}} Бабло: {{money}}
+ Время: {{time}}
 </div>
 </template>
 
 
 <script>
-export default{
-  data(){
-    return{
-    mode: ' ',
-    money: ' '
-  }
-},
+import {db} from '../main.js';
+import * as firestore from "firebase/firestore"
+import * as firebase from "firebase";
 
-  methods:{
-    createGame(){
-
+export default {
+  data() {
+    return {
+      id: null,
+      mode: ' ',
+      money: ' ',
+      time: ' '
     }
-  }
+  },
 
+  methods: {
+    createGame(){
+      db.collection("games").doc(this.id.toString()).set({
+        id: this.id,
+        mode: this.mode,
+        money: +this.money,
+        time: this.time,
+        team1: [],
+        team2: []
+        })
+        .then(function() {
+          console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+          console.error("Error writing document: ", error);
+        });
+    }
+  },
 
+  created(){
+    this.id = Date.now();
+    }
 
 }
 

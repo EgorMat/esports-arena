@@ -14,9 +14,11 @@ const mutations = {
 const getters  = {
   getGames(state){
     return state.games
-  }
-}
-
+  },
+  // getPrivateGames(state){
+  //   return state.games.filter(game => {(game.status.privacy == "private"})
+  // }
+};
 
 const actions = {
     setGames({commit, state}){

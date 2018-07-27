@@ -10,9 +10,13 @@
   <div class="modal-window" v-show='modal3Opened'>{{game.money}}р. будут возвращены на Ваш баланс
     <button class='ok-button' @click ='leaveGame'>ОК</button>
   </div>
+ <div class="modal-window" v-show='modal4Opened'>К сожалению, мест в этой команде нет
+ </div>
+
   <div class='fader' v-show ='showFader' @click='closeModals'></div>
   <p>ID турнира: {{game.id}}</p>
   <p>Сумма: {{game.money}}</p>
+  <p>Мод: {{game.mode}}</p>
   <div>Силы Света:
     <ul>
       <li v-for="players in game.team1">
@@ -51,6 +55,7 @@ export default{
       modal1Opened : false,
       modal2Opened : false,
       modal3Opened : false,
+      modal4Opened: false,
       showFader  : false
       }
     },
@@ -66,13 +71,21 @@ export default{
 
   methods: {
     showModal1(){
-      this.modal1Opened = true;
-      this.showFader = true;
+      if (this.game.team1.length <= 4) {
+          this.modal1Opened = true;
+          this.showFader = true;}
+      else {
+          this.showModal4()
+      }
     },
 
     showModal2() {
+      if (this.game.team2.length <= 4) {
       this.modal2Opened = true;
-      this.showFader = true;
+      this.showFader = true;}
+      else {
+          this.showModal4()
+      }
     },
 
     showModal3(){
@@ -80,10 +93,16 @@ export default{
       this.showFader = true;
     },
 
+    showModal4(){
+      this.modal4Opened = true;
+      this.showFader = true;
+    },
+
     closeModals(){
       this.modal1Opened = false;
       this.modal2Opened = false;
       this.modal3Opened = false;
+      this.modal4Opened = false;
       this.showFader = false;
     },
 

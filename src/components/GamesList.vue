@@ -28,6 +28,9 @@
   <router-link :to="{name: 'creategame'}">
      Создать игру
   </router-link>
+  <!-- <div v-for="game in privateGames">
+    {{game.status}}
+    </div> -->
 </div>
 
 </template>
@@ -37,7 +40,8 @@ import {mapState,mapGetters} from 'vuex';
 
 export default {
   computed: mapGetters({
-    games: 'getGames'
+    games: 'getGames',
+    // privateGames: 'getPrivateGames'
   }),
   created() {
     this.$store.dispatch('setGames')

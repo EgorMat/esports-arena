@@ -17,6 +17,7 @@
   <p>ID турнира: {{game.id}}</p>
   <p>Сумма: {{game.money}}</p>
   <p>Мод: {{game.mode}}</p>
+  <p> {{game.playersInTeam}} vs {{game.playersInTeam}} <p>
   <div>Силы Света:
     <ul>
       <li v-for="players in game.team1">
@@ -71,7 +72,7 @@ export default{
 
   methods: {
     showModal1(){
-      if (this.game.team1.length <= 4) {
+      if (this.game.team1.length <= this.game.playersInTeam-1) {
           this.modal1Opened = true;
           this.showFader = true;}
       else {
@@ -80,7 +81,7 @@ export default{
     },
 
     showModal2() {
-      if (this.game.team2.length <= 4) {
+      if (this.game.team2.length <= this.game.playersInTeam-1) {
       this.modal2Opened = true;
       this.showFader = true;}
       else {

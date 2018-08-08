@@ -15,9 +15,16 @@ const getters  = {
   getGames(state){
     return state.games
   },
-  // getPrivateGames(state){
-  //   return state.games.filter(game => {(game.status.privacy == "private"})
-  // }
+  getPrivateGames(state){
+    return state.games.filter(function(game) {
+      return game.status.privacy == "private"
+    })
+  },
+  getCommonGames(state){
+    return state.games.filter(function(game) {
+      return game.status.privacy == "common"
+    })
+  }
 };
 
 const actions = {

@@ -5,6 +5,7 @@
   <button @click='createGame'>Создать игру</button>
   <input type="number" placeholder="Сумма" v-model="money">
   <input type="time" placeholder="Время" v-model="time">
+  <input type="number" placeholder="Количество игроков в команде" v-model="playersInTeam">
   <select v-model='mode'>
       <option disabled>Выбор мода</option>
       <option>Captains mode</option>
@@ -28,7 +29,8 @@ export default {
       id: null,
       mode: ' ',
       money: ' ',
-      time: ' '
+      time: ' ',
+      playersInTeam : null,
     }
   },
 
@@ -40,7 +42,11 @@ export default {
         money: +this.money,
         time: this.time,
         team1: [],
-        team2: []
+        team2: [],
+        playersInTeam : this.playersInTeam,
+        status: {
+          privacy : "private"
+        }
         })
         .then(function() {
           console.log("Document successfully written!");

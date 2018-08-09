@@ -112,6 +112,7 @@ export default{
       this.game.team1.push(this.user.username);
       this.updateGame();
       this.isIn = true;
+      this.$store.dispatch('addNewGame', this.game.id)
       this.$store.dispatch('debitBalance', this.game.money).then(this.$store.dispatch('updateProfile'))
       this.closeModals()
       }
@@ -125,6 +126,7 @@ export default{
       this.game.team2.push(this.user.username);
       this.updateGame();
       this.isIn = true;
+        this.$store.dispatch('addNewGame', this.game.id);
             this.$store.dispatch('debitBalance', this.game.money).then(this.$store.dispatch('updateProfile'))
             }
         else {

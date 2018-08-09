@@ -1,6 +1,6 @@
 <template>
 <div>
-  <<router-link :to="{ name: 'searchgame'}">Поиск игры</router-link>
+  <router-link :to="{ name: 'searchgame'}"> Поиск игры</router-link>
 
   <input type="checkbox" v-model="private">Только приватные{{private}}
   <input type="checkbox" v-model="public">Только публичные{{public}}

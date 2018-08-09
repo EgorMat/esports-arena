@@ -3,7 +3,8 @@
     <p>username: {{user.username}}</p>
     <p>email: {{user.email}}</p>
     <p>id: {{user.id}}</p>
-    <p>баланс: {{user.balance}}</p>  
+    <p>баланс: {{user.balance}}</p>
+    игры: {{user.games}}
   </div>
 </template>
 

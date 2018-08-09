@@ -2,9 +2,9 @@
 <div>
 <div v-if="isLoading">Загрузка...</div>
   Поиск игры
-<input type = "checkbox" v-model="onePlayer">1vs1
-<input type = "checkbox" v-model="threePlayers">3vs3
-<input type = "checkbox" v-model="fivePlayers">5vs5
+<input type = "checkbox" @click="onePlayer" v-model="one">1vs1
+<input type = "checkbox" @click="threePlayers" v-model="three">3vs3
+<input type = "checkbox" @click="fivePlayers" v-model="five">5vs5
 <input type = "number" v-model="playersInTeam">Количество человек в команде
 
 <button @click="searchGame">Найти игру</button>
@@ -23,16 +23,35 @@ export default {
     data(){
       return{
         isLoading : false,
-            playersInTeam : '',
-            onePlayer : false,
-            threePlayers: false,
-            fivePlayers: false,
+            playersInTeam : null,
+            one: false,
+            three: false,
+            five: false,
             game: {},
 
       }
     },
 
     methods: {
+        onePlayer(){
+          this.three = false;
+          this.five = false;
+          this.playersInTeam = 1;
+        },
+        threePlayers(){
+          this.one = false;
+          this.five = false;
+          this.playersInTeam = 3;
+        },
+        fivePlayers(){
+          this.three = false;
+          this.one = false;
+          this.playersInTeam = 5;
+        },
+
+
+
+
       searchGame(){
         var $this = this
         firebase.auth().onAuthStateChanged(function(u) {
@@ -41,8 +60,7 @@ export default {
           const g = db.collection("games").where("playersInTeam", "==", +$this.playersInTeam)
           g.get().then(function(querySnapshot) {
                             querySnapshot.forEach(function(doc) {
-                              $this.game = doc.data()
-                              console.log($this.game)
+                        $this.$router.push({name: 'game', params: {id: doc.data().id}})
                               });
           })}})
       },

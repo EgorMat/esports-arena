@@ -23,6 +23,12 @@ const mutations = {
     },
     RETURN_FUNDS(state, money){
       state.balance = state.balance + money
+    },
+    ADD_NEW_GAME(state, id){
+      state.games.push(id)
+    },
+    REMOVE_GAME(state, id){
+      
     }
     // RESET_CURRENT_USER(state){
     //   state.email = '';
@@ -60,6 +66,10 @@ const actions = {
     returnFunds({commit, state}, money){
       commit('RETURN_FUNDS', money)
     },
+    addNewGame({commit, state}, game){
+      commit('ADD_NEW_GAME', game)
+    },
+
 
     updateProfile({state}){
       var x;

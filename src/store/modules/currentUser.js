@@ -24,11 +24,17 @@ const mutations = {
     RETURN_FUNDS(state, money){
       state.balance = state.balance + money
     },
-    ADD_NEW_GAME(state, id){
-      state.games.push(id)
+    ADD_NEW_GAME(state, gameId){
+      state.games.push(gameId)
     },
-    REMOVE_GAME(state, id){
-      
+    REMOVE_GAME(state, gameId){
+      for(let i = 0; i<=state.games.length-1; i++){
+          if (state.games[i] == gameId){
+            let z = state.games[i];
+              let y  = state.games.indexOf(z);
+              state.games.splice(y,1);
+          }
+        }
     }
     // RESET_CURRENT_USER(state){
     //   state.email = '';
@@ -43,6 +49,9 @@ const mutations = {
 const getters = {
   getCurrentUser(state){
     return state
+  },
+  getCurrenUserGames(state){
+    return state.games
   }
 }
 
@@ -66,8 +75,11 @@ const actions = {
     returnFunds({commit, state}, money){
       commit('RETURN_FUNDS', money)
     },
-    addNewGame({commit, state}, game){
-      commit('ADD_NEW_GAME', game)
+    addNewGame({commit, state}, gameId){
+      commit('ADD_NEW_GAME', gameId)
+    },
+    removeGame({commit,state}, gameId){
+      commit('REMOVE_GAME', gameId)
     },
 
 

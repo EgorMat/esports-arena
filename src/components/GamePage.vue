@@ -112,8 +112,8 @@ export default{
       this.game.team1.push(this.user.username);
       this.updateGame();
       this.isIn = true;
-      this.$store.dispatch('addNewGame', this.game.id)
-      this.$store.dispatch('debitBalance', this.game.money).then(this.$store.dispatch('updateProfile'))
+      this.$store.dispatch('addNewGame', this.game.id).then(
+      this.$store.dispatch('debitBalance', this.game.money).then(this.$store.dispatch('updateProfile')))
       this.closeModals()
       }
         else {
@@ -126,8 +126,8 @@ export default{
       this.game.team2.push(this.user.username);
       this.updateGame();
       this.isIn = true;
-        this.$store.dispatch('addNewGame', this.game.id);
-            this.$store.dispatch('debitBalance', this.game.money).then(this.$store.dispatch('updateProfile'))
+        this.$store.dispatch('addNewGame', this.game.id).then(
+            this.$store.dispatch('debitBalance', this.game.money).then(this.$store.dispatch('updateProfile')))
             }
         else {
             alert('у вас не хватает денег')
@@ -145,6 +145,7 @@ export default{
                   this.game.team1.splice(y,1);
                   this.updateGame();
                   this.isIn = false;
+                  this.$store.dispatch('removeGame', this.game.id)
                   this.$store.dispatch('returnFunds', this.game.money).then(this.$store.dispatch('updateProfile'))
               }
             }
@@ -155,6 +156,7 @@ export default{
                     this.game.team2.splice(k,1);
                     this.updateGame();
                     this.isIn = false;
+                    this.$store.dispatch('removeGame', this.game.id)
                     this.$store.dispatch('returnFunds', this.game.money).then(this.$store.dispatch('updateProfile'))
                 }
               }

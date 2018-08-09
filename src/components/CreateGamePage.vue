@@ -1,7 +1,6 @@
 <template>
 <div>
-  СОздавай игру
-
+  Сkздавай игру
   <button @click='createGame'>Создать игру</button>
   <input type="number" placeholder="Сумма" v-model="money">
   <input type="time" placeholder="Время" v-model="time">
@@ -26,7 +25,7 @@ import * as firebase from "firebase";
 export default {
   data() {
     return {
-      id: null,
+      id: ' ',
       mode: ' ',
       money: ' ',
       time: ' ',
@@ -58,7 +57,7 @@ export default {
   },
 
   created(){
-    this.id = Date.now();
+    this.id = Date.now().toString();
     }
 
 }

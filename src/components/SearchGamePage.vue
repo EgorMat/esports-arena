@@ -5,7 +5,7 @@
 <input type = "checkbox" @click="onePlayer" v-model="one">1vs1
 <input type = "checkbox" @click="threePlayers" v-model="three">3vs3
 <input type = "checkbox" @click="fivePlayers" v-model="five">5vs5
-<input type = "number" v-model="playersInTeam">Количество человек в команде
+{{playersInTeam}}Количество человек в команде
 
 <button @click="searchGame">Найти игру</button>
 <div>{{game}}</div>
@@ -56,12 +56,14 @@ export default {
         var $this = this
         firebase.auth().onAuthStateChanged(function(u) {
         if (u){
-          console.log($this.playersInTeam)
           const g = db.collection("games").where("playersInTeam", "==", +$this.playersInTeam)
           g.get().then(function(querySnapshot) {
+                            let x  = [];
                             querySnapshot.forEach(function(doc) {
-                        $this.$router.push({name: 'game', params: {id: doc.data().id}})
+                            x.push(doc.data());
+                            // $this.$router.push({name: 'game', params: {id: doc.data().id}})
                               });
+                            console.log(x);  
           })}})
       },
 

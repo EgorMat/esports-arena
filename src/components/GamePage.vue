@@ -17,6 +17,7 @@
   <p>ID турнира: {{game.id}}</p>
   <p>Сумма: {{game.money}}</p>
   <p>Мод: {{game.mode}}</p>
+  <p>Дата: {{game.time}}</p>
   <p> {{game.playersInTeam}} vs {{game.playersInTeam}} <p>
   <div>Силы Света:
     <ul>
@@ -62,8 +63,10 @@ export default{
     },
 
   created(){
-   this.getGame(this.$route.params.id)
-   setTimeout(()=>this.checkPlayer(), 2000); /// переделать в промисы
+   this.getGame(this.$route.params.id).then(() => {
+      this.checkPlayer()
+   })
+  // setTimeout(()=>this.checkPlayer(), 2000); /// переделать в промисы
   },
 
   computed: mapGetters({
@@ -182,6 +185,7 @@ export default{
         },
 
     getGame(id){
+      return new Promise((resolve, reject) => {
       var $this = this
       firebase.auth().onAuthStateChanged(function(u) {
       if (u){
@@ -189,7 +193,17 @@ export default{
           g.get().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
              $this.game = doc.data()});
-        })}})
+             if ($this.game){
+               resolve($this.game)
+             }
+             else {
+               reject("Pizdets")
+             }
+        })}
+        console.log($this.game)
+        })
+
+      })
     },
     updateGame(){
       var x;

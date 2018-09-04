@@ -50,7 +50,7 @@ const getters = {
   getCurrentUser(state){
     return state
   },
-  getCurrenUserGames(state){
+  getCurrentUserGames(state){
     return state.games
   }
 }

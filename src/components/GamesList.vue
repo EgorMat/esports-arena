@@ -13,6 +13,7 @@
       <router-link :to="{name: 'game', params: {id: game.id}}">
         <div class='tournaments-list-item'>
           <p>Статус: {{game.status.privacy}}<p>
+          <p>Мод: {{game.mode}} </p>
           <p>ID: {{game.id}}</p>
           <p>Время: {{game.time}}</p>
           <p>Сумма : {{game.money}}</p>
@@ -129,10 +130,10 @@ export default {
         }
     },
     getGames(){
-       var $this = this
+        var $this = this
         firebase.auth().onAuthStateChanged(function(u) {
         if (u){
-          db.collection("games").get().then(function(querySnapshot) {
+          db.collection("games").orderBy("time").get().then(function(querySnapshot) {
            querySnapshot.forEach(function(doc) {
                $this.games.push(doc.data());
            });
